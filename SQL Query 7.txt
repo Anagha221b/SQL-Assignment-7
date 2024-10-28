@@ -1,0 +1,88 @@
+Query->
+ -> creating table Country.
+
+	CREATE table Country(
+  		Id INT PRIMARY KEY,
+  		Country_name VARCHAR(50),
+  		Population INT,
+  		Area INT );
+
+->creating table Person.
+
+	CREATE table Persons(
+		 Id INT PRIMARY KEY, 
+		 Fname VARCHAR(100), 
+		 Lname VARCHAR(100), 
+		 Population INT,
+		Rating FLOAT, 
+		Country_Id INT, 
+		Country_name VARCHAR(100),
+		FOREIGN KEY(Country_Id) REFERENCES Country(Id));
+
+->Inserting data in country table.
+
+	INSERT INTO Country (Id, Country_name, Population, Area) VALUES
+	(1, 'USA', 331000, 9833520),
+	(2, 'India', 1409038, 3287263),
+	(3, 'China', 1444216107, 9596961),
+	(4, 'Russia', 1912025, 17098242),
+	(5, 'Indonesia', 297621, 1904569),
+	(6, 'Australia', 256041, 7692024),
+	(7, 'Brazil', 213437, 8515767),
+	(8, 'UK', 2299937, 881912),
+	(9, 'Chile', 2069587, 923769),
+	(10, 'Bangladesh', 1663498, 147570);
+
+->Inserting data in Persons Table.
+
+	INSERT INTO Persons (Id, Fname, Lname, Population, Rating, Country_Id, Country_name,DOB) VALUES
+	(1, 'John', 'Doe', 331000, 4.8, 1, 'USA','1971-03-18'),
+	(2, 'Aditya', 'Sharma', 1409038, 3.9, 2, 'India','1952-12-08'),
+	(3, 'Mike', 'Chenwan', 331000, 4.2, 1, 'USA','1999-01-09'),
+	(4, 'Emily', 'Davis', 1912025, 3.8, 4,'Russia','1992-08-16'),
+	(5, 'David', 'Brown', 52362, 4.0, 5, 'Canada','1987-03-13'),
+	(6, 'Sarah', 'Miller', 2299937, 3.1, 8, 'UK','1986-11-12'),
+	(7, 'Chris', 'Wilson', 1912025, 2.7, 4, 'Russia','1988-12-13'),
+	(8, 'Annie', 'Sebastian', 2299937, 4.3, 8, 'UK','1978-06-11'),
+	(9, 'James', 'Taylor', 256041, 2.4, 6, 'Australia','1997-03-01'),
+	(10, 'Ketan', 'Patel', 1409038, 4.6, 2, 'India','1975-03-01');
+
+
+
+Consider the Country table and Persons table that you created earlier and perform the following: 
+
+1. Add a new column called DOB in Persons table with data type as Date. 
+	
+	ALTER TABLE Persons
+	ADD DOB DATE;
+
+2. Write a user-defined function to calculate age using DOB. 
+	
+	CREATE function CalculateAge(@DOB DATE)
+	RETURNS INT
+	AS	
+	BEGIN
+		declare @age INT;
+		set @age=datediff(year,@dob,getdate());
+		return @age;
+ 	END;
+
+3. Write a select query to fetch the Age of all persons using the function that has been created. 
+
+	SELECT id,fname,lname,dob,dbo.CalculateAge(dob) as age 
+	from Persons;
+
+4. Find the length of each country name in the Country table. 
+
+	SELECT country_name,len(country_name) as Length_of_each_country 
+	from Country;
+
+5. Extract the first three characters of each country's name in the Country table. 
+	
+	SELECT id,country_name,SUBSTRING(country_name,1,3) as first_three_char 
+	FROM Country;
+
+6. Convert all country names to uppercase and lowercase in the Country table.
+
+	SELECT id,upper(country_name) as Country_in_uppercase,lower(country_name) as Country_in_lowercase 
+	from Country;
